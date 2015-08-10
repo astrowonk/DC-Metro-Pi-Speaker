@@ -172,8 +172,9 @@ else:
 # Loops through all the incidents on our line and in the direction we care about and assembles them into one string.
 # This won't work as well on a station and group that has several lines
 
+railText = ' '
 if len(myIncidents.lineIncidents(line)) > 0:
-	railText = ' '
+
 	for item in myIncidents.lineIncidents(line):
 		##print item
 		x = item.partition(':')
