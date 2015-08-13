@@ -11,6 +11,8 @@ import ConfigParser
 ## added this argument handler so someone could test this without constantly making new mp3 files
 parser = argparse.ArgumentParser()
 parser.add_argument("--nosound", help="Does not create an MP3", action="store_true")
+parser.add_argument("--railtest", help="Loads incident JSON from text file", action="store_true")
+
 args = parser.parse_args()
 
 config = ConfigParser.SafeConfigParser()
@@ -149,8 +151,14 @@ if len(busstop) > 0:
 else:
 	isBus = False
 
-	
+if args.railtest:
+	with open('testdata.txt') as data_file:    
+ 		railIncidentData = json.load(data_file)
+else:
+	railIncidentData = getjson(railurl)
+			
 myIncidents = railHandler(railIncidentData)
+
 myRailTimes = railPredictionHandler(predictionData)
 	
 ## here is where we assemble the text myText to speak. This should probably be a function? IT's a lot of if statements
