@@ -16,7 +16,7 @@ parser.add_argument("--railtest", help="Loads incident JSON from text file", act
 args = parser.parse_args()
 
 config = ConfigParser.SafeConfigParser()
-config.read('wmata.cfg')
+config.read('/usr/local/etc/wmata.cfg')
 
 busstop = str(config.get('wmata','bus_stop'))
 railstop = str(config.get('wmata','rail_stop'))
