@@ -224,7 +224,7 @@ else:
 ## I use a 2-line shell script that calls this script and then mpg123 on the pi
 ## mp3 probably needs an option to set the save location
 	tts = gTTS(text= myText, lang='en') 
-	tts.save('/tmp/ext.mp3')
+	tts.save('/tmp/text.mp3')
 
 
 ##print time
