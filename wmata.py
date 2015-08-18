@@ -202,7 +202,7 @@ theTimes = myRailTimes.trainTimes(railgroup)
 ## This builds the string for the average headways
 
 
-if len(theTimes) == 1:
+if len(theTimes) == 0:
 	myText = myText + "There are no upcoming trains listed. "
 
 if len(theTimes) == 1:
