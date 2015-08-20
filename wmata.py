@@ -1,10 +1,9 @@
 #!/usr/local/bin/python
 
 ########### Python 2.7 #############
-import pycurl, json, urllib, argparse
+import requests, argparse
 
 from datetime import datetime
-from StringIO import StringIO
 from gtts import gTTS
 import ConfigParser
 
@@ -23,7 +22,7 @@ railstop = str(config.get('wmata','rail_stop'))
 api = str(config.get('wmata','apikey'))
 railgroup = str(config.get('wmata','rail_group'))
 line = str(config.get('wmata','rail_line'))
-theapi = 'api_key : ' + api
+theapi = {'api_key' : api}
 
 
 #### getjson is mostly borrowed documentary code that uses pycurl to get the json data. 
@@ -39,19 +38,11 @@ railPredicUrl = 'https://api.wmata.com/StationPrediction.svc/json/GetPrediction/
 
 
 def getjson(url):
-	buffer = StringIO()
 
-	c = pycurl.Curl()
-	c.setopt(pycurl.URL, url)
-	c.setopt(pycurl.HTTPHEADER, [theapi])
-	c.setopt(pycurl.WRITEDATA, buffer)
+	r = requests.get(url, headers=theapi)
 
-	c.perform()
 
-	busbody = buffer.getvalue()
-	parsed_json = json.loads(busbody)
-	
-	return parsed_json
+	return r.json()
 
 class busHandler(object):
 # Hey look I'm writing objects. This one has quite a few methods. Wmata's data often comes down as lists of dictionaries 
