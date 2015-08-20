@@ -1,10 +1,9 @@
 #!/usr/local/bin/python
 
 ########### Python 2.7 #############
-import pycurl, json, urllib, argparse
+import requests, argparse
 
 from datetime import datetime
-from StringIO import StringIO
 from gtts import gTTS
 import ConfigParser
 
@@ -23,15 +22,16 @@ railstop = str(config.get('wmata','rail_stop'))
 api = str(config.get('wmata','apikey'))
 railgroup = str(config.get('wmata','rail_group'))
 line = str(config.get('wmata','rail_line'))
-theapi = 'api_key : ' + api
+theapi = {'api_key' : api}
 
 
 #### getjson is mostly borrowed documentary code that uses pycurl to get the json data. 
-##I found httlib super slow. urllib2 or urllib 3 may work fine too...
-##I just haven't reimplemented it yet. 
-### pycurl did take some doing to compile on the pi (though worked fine on the Mac) 
 
-## Contruct our URLS below. These urls are so nice and simple to make with pycurl. That's why I haven't changed to something else
+### I used to use pycurl but it took effort to compile on the pi (though worked fine on the Mac) \
+# So I switched to requests. Though I may not be forming the URLs using the parameters syntax
+# properly it works fine.
+
+## Contruct our URLS below. These urls are so nice and simple with requests (and formerly with pycurl)
 
 busurl = 'https://api.wmata.com/NextBusService.svc/json/jPredictions?StopID=' + busstop 
 railurl = 'https://api.wmata.com/Incidents.svc/json/Incidents'
@@ -39,19 +39,11 @@ railPredicUrl = 'https://api.wmata.com/StationPrediction.svc/json/GetPrediction/
 
 
 def getjson(url):
-	buffer = StringIO()
 
-	c = pycurl.Curl()
-	c.setopt(pycurl.URL, url)
-	c.setopt(pycurl.HTTPHEADER, [theapi])
-	c.setopt(pycurl.WRITEDATA, buffer)
+	r = requests.get(url, headers=theapi)
 
-	c.perform()
 
-	busbody = buffer.getvalue()
-	parsed_json = json.loads(busbody)
-	
-	return parsed_json
+	return r.json()
 
 class busHandler(object):
 # Hey look I'm writing objects. This one has quite a few methods. Wmata's data often comes down as lists of dictionaries 

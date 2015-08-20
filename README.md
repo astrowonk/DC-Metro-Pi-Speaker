@@ -10,7 +10,7 @@ The code queries the WMATA api for one bus stop and one rail stop and group. It 
 
 It also works reasonably well on Mac OS X. I haven't tried it on any other systems.
 
-I think the main dependencies are pycurl, gTTS, argparser and whatever is needed to make those run.
+I think the main dependencies are requests, gTTS, argparser and whatever is needed to make those run.
 
 HOW TO USE:
 
