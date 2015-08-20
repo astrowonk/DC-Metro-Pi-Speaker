@@ -25,3 +25,14 @@ I have set up a crontab that runs a two line shell script to run this python scr
 	mpg123 -q /tmp/text.mp3
 
 You can run the python script with --nosound and it will query and print text to the terminal but will not use gTTS to create the mp3 file.
+
+##requests and urllib3 errors
+
+Ok, so requests worked like a charm on OS X with the latest python, but on the RPi it spat out all kinds of SSL errors about an insecure platform. PySSL I think is needed. Eventually I got 
+	sudo pip install requests[security]
+
+to work though it requires possibly [adding some packages](http://stackoverflow.com/questions/29099404/ssl-insecureplatform-error-when-using-requests-package) via apt-get to make that work properly. python-dev libffi-dev libssl-dev seem to be needed to compile the security options of requests.
+
+In light of this, I may alter the code to check for requests and if it's not there, fall back to pycurl.
+
+
