@@ -29,6 +29,7 @@ You can run the python script with --nosound and it will query and print text to
 ##requests and urllib3 errors
 
 Ok, so requests worked like a charm on OS X with the latest python, but on the RPi it spat out all kinds of SSL errors about an insecure platform. PySSL I think is needed. Eventually I got 
+
 	sudo pip install requests[security]
 
 to work though it requires possibly [adding some packages](http://stackoverflow.com/questions/29099404/ssl-insecureplatform-error-when-using-requests-package) via apt-get to make that work properly. python-dev libffi-dev libssl-dev seem to be needed to compile the security options of requests.
