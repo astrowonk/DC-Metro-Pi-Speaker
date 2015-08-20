@@ -26,9 +26,10 @@ theapi = {'api_key' : api}
 
 
 #### getjson is mostly borrowed documentary code that uses pycurl to get the json data. 
-##I found httlib super slow. urllib2 or urllib 3 may work fine too...
-##I just haven't reimplemented it yet. 
-### pycurl did take some doing to compile on the pi (though worked fine on the Mac) 
+
+### I used to use pycurl but it took effort to compile on the pi (though worked fine on the Mac) \
+# So I switched to requests. Though I may not be forming the URLs using the parameters syntax
+# properly it works fine.
 
 ## Contruct our URLS below. These urls are so nice and simple to make with pycurl. That's why I haven't changed to something else
 
