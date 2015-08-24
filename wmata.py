@@ -200,7 +200,7 @@ theTimes = myRailTimes.trainTimes(railgroup,line)
 # print theTimes
 # print len(theTimes)
 
-print myRailTimes.PredictionList()
+#print myRailTimes.PredictionList()
 
 ## This builds the string for the average headways
 
