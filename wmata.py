@@ -15,6 +15,8 @@ parser.add_argument("--railtest", help="Loads incident JSON from text file", act
 args = parser.parse_args()
 
 config = ConfigParser.SafeConfigParser()
+## I used to just save this to the same directory as wherever the script was but that cause a lot of issues
+## namely it would fail to load the config when run from a crontab
 config.read('/usr/local/etc/wmata.cfg')
 
 busstop = str(config.get('wmata','bus_stop'))
@@ -23,16 +25,20 @@ api = str(config.get('wmata','apikey'))
 railgroup = str(config.get('wmata','rail_group'))
 line = str(config.get('wmata','rail_line'))
 theapi = {'api_key' : api}
-
+try:
+	save_file = str(config.get('wmata','save_file')) 
+except ConfigParser.NoOptionError:
+	save_file = '/tmp/text.mp3'
 
 #### getjson is mostly borrowed documentary code that uses pycurl to get the json data. 
-### I used to use pycurl but it took effort to compile on the pi (though worked fine on the Mac) \
-# So I switched to requests. Though I may not be forming the URLs using the parameters syntax
-# properly it works fine.
 
 ### I used to use pycurl but it took effort to compile on the pi (though worked fine on the Mac) \
 # So I switched to requests. Though I may not be forming the URLs using the parameters syntax
 # properly it works fine.
+
+# requests has its own problems on the RPi, namely a lot of insescureplatform ssl warnings.
+# It was almost as much of a pain getting requests to work without those errors
+# as it was getting pycurl to build in the first place
 
 ## Contruct our URLS below. These urls are so nice and simple with requests (and formerly with pycurl)
 
@@ -101,7 +107,8 @@ class railHandler(object):
 	
 
 class railPredictionHandler(object):
-#you probably never want PRedictionList since it's pretty raw, but I then call that in the other functions since the entire block of 
+#you probably never want PRedictionList since it's pretty raw, but I then call that in the other functions 
+#since the entire block of 
 #prediction data is under that dictionary keyword Trains
 
 
@@ -109,11 +116,11 @@ class railPredictionHandler(object):
 		self.thejson=thejson
 	def PredictionList(self):
 		return self.thejson['Trains']
-	def trainTimes(self,group):
+	def trainTimes(self,group,myline):
 		theList = []
 		for item in self.PredictionList():
 # here I'm just leaving these non numerical values out so I can do math on the list 
-			if (item['Group'] == group) and (item['Min'] not in ['ARR','BRD','---']):
+			if (item['Group'] == group) and (item['Min'] not in ['ARR','BRD','---']) and item['Line']==myline:
 				theList.append(item['Min'])
 ## make the list ints
 		return map(int, theList)		
@@ -123,24 +130,24 @@ class railPredictionHandler(object):
 			if item['Group'] == group:
 				theList.append(item['DestinationName'])
 		return theList
-	def averageHeadways(self,x):
+	def averageHeadways(self,x,myline):
 ## this returns an integer which .. I think I'm ok with
-		return self.trainTimes(x)[-1] / len (theTimes)
+		return self.trainTimes(x,myline)[-1] / len (theTimes)
 			
 ## No more objects, onto the actual script code				
 
 # Get the rawjson data from wmata based on our constructed URLs we made
 
-theBusData = getjson(busurl)
 
 railIncidentData = getjson(railurl)
-
 predictionData = getjson(railPredicUrl)
 
 
 ##create objects for bus times, rail incidents, and rail times
 ## if busstop is left out of the config file, we won't make a bustimes object
+## nor even query the bus URL
 if len(busstop) > 0:
+	theBusData = getjson(busurl)
 	myBusTimes = busHandler(theBusData)
 	isBus = True
 else:
@@ -188,11 +195,12 @@ if len(myIncidents.lineIncidents(line)) > 0:
 myText = myText + railText
 
 ##debugging text
-theTimes = myRailTimes.trainTimes(railgroup)
+theTimes = myRailTimes.trainTimes(railgroup,line)
 # print "Rail times below"
 # print theTimes
 # print len(theTimes)
-# print myRailTimes.averageHeadways(railgroup)
+
+print myRailTimes.PredictionList()
 
 ## This builds the string for the average headways
 
@@ -201,13 +209,13 @@ if len(theTimes) == 0:
 	myText = myText + "There are no upcoming trains listed. "
 
 if len(theTimes) == 1:
-	myText = myText + "There is only one upcoming train time, in "  + str(myRailTimes.averageHeadways(railgroup)) + " minutes."
+	myText = myText + "There is only one upcoming train time, in "  + str(myRailTimes.averageHeadways(railgroup,line)) + " minutes."
 
-if len(theTimes) > 1 and (myRailTimes.averageHeadways(railgroup) > 5):
-	myText = myText + "Rail headway times are a little long, currently averaging " + str(myRailTimes.averageHeadways(railgroup)) + " minutes."
+if len(theTimes) > 1 and (myRailTimes.averageHeadways(railgroup,line) > 5):
+	myText = myText + "Rail headway are currently averaging " + str(myRailTimes.averageHeadways(railgroup,line)) + " minutes."
 
-if len(theTimes) > 1 and (myRailTimes.averageHeadways(railgroup) <= 5):
-	myText = myText + "Rail headway times are normal. Average headway time: " + str(myRailTimes.averageHeadways(railgroup)) + " minutes."
+if len(theTimes) > 1 and (myRailTimes.averageHeadways(railgroup,line) <= 5):
+	myText = myText + "Rail headway times are normal, currently " + str(myRailTimes.averageHeadways(railgroup,live)) + " minutes."
 
 ## prints the text to be spoke to the screen using Gtts
 print myText	
@@ -217,9 +225,11 @@ else:
 ## unless the --nosound option was used, uses the google text to speech service and python library to make an mp3
 ## for now you'll have to find a way to play this
 ## I use a 2-line shell script that calls this script and then mpg123 on the pi
-## mp3 probably needs an option to set the save location
+## mp3 probably needs an option to set the save location, which could be specified in the 
+## config file.
+
 	tts = gTTS(text= myText, lang='en') 
-	tts.save('/tmp/text.mp3')
+	tts.save(save_file)
 
 
 ##print time
