@@ -215,7 +215,7 @@ if len(theTimes) > 1 and (myRailTimes.averageHeadways(railgroup,line) > 5):
 	myText = myText + "Rail headway are currently averaging " + str(myRailTimes.averageHeadways(railgroup,line)) + " minutes."
 
 if len(theTimes) > 1 and (myRailTimes.averageHeadways(railgroup,line) <= 5):
-	myText = myText + "Rail headway times are normal, currently " + str(myRailTimes.averageHeadways(railgroup,live)) + " minutes."
+	myText = myText + "Rail headway times are normal, currently " + str(myRailTimes.averageHeadways(railgroup,line)) + " minutes."
 
 ## prints the text to be spoke to the screen using Gtts
 print myText	
