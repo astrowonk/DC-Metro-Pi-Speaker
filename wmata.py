@@ -25,6 +25,8 @@ api = str(config.get('wmata','apikey'))
 railgroup = str(config.get('wmata','rail_group'))
 line = str(config.get('wmata','rail_line'))
 theapi = {'api_key' : api}
+
+## It will attempt to get a mp3 save location from the config, if not, /tmp.
 try:
 	save_file = str(config.get('wmata','save_file')) 
 except ConfigParser.NoOptionError:
