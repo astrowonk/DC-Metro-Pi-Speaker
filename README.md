@@ -10,7 +10,7 @@ The code queries the WMATA api for one bus stop and one rail stop and group. It 
 
 It also works reasonably well on Mac OS X. I haven't tried it on any other systems.
 
-I think the main dependencies are requests, gTTS, argparser and whatever is needed to make those run.
+I think the main dependencies are requests, gTTS, argparser and whatever is needed to make those run. espeak if you want get gTTS to work.
 
 HOW TO USE:
 
@@ -38,4 +38,4 @@ In light of this, I may alter the code to check for requests and if it's not the
 
 ## Google Text to Speech blocked
 
-Running this script a few times every morning somehow tripped Google to start throwing up CAPTCHA intercepts, which breaks the code.
+Running this script a few times every morning somehow tripped Google to start throwing up CAPTCHA intercepts, which breaks the code. so, now we have espeak support. Much lower quality but it works.
