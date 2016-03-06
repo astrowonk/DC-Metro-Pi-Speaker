@@ -238,7 +238,7 @@ print myText
 if args.nosound:
 	print 'No MP3 Made'
 elif args.espeak:
-	subprocess.Popen(["espeak", "-v", "mb-us1", myText])
+	subprocess.Popen(["espeak", "-v", "en", myText])
 else:
 	try:
 		tts = gTTS(text= myText, lang='en') 
