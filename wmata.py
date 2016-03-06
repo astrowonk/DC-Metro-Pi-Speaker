@@ -1,16 +1,23 @@
 #!/usr/local/bin/python
 
 ########### Python 2.7 #############
-import requests, argparse
+import requests, argparse, subprocess
 
 from datetime import datetime
-from gtts import gTTS
 import ConfigParser
+
+try:
+	from gtts import gTTS
+except ImportError:
+    print "no GTTs, will use espeak"
+
 
 ## added this argument handler so someone could test this without constantly making new mp3 files
 parser = argparse.ArgumentParser()
 parser.add_argument("--nosound", help="Does not create an MP3", action="store_true")
 parser.add_argument("--railtest", help="Loads incident JSON from text file", action="store_true")
+parser.add_argument("--espeak", help="Uses espeak through subprocess", action="store_true")
+
 
 args = parser.parse_args()
 
@@ -219,22 +226,20 @@ if len(theTimes) > 1 and (myRailTimes.averageHeadways(railgroup,line) > 5):
 if len(theTimes) > 1 and (myRailTimes.averageHeadways(railgroup,line) <= 5):
 	myText = myText + "Rail headway times are normal, currently " + str(myRailTimes.averageHeadways(railgroup,line)) + " minutes."
 
+
 ## prints the text to be spoke to the screen using Gtts
-print myText	
-if args.nosound:
-	print 'No MP3 Made'
-else:
 ## unless the --nosound option was used, uses the google text to speech service and python library to make an mp3
 ## for now you'll have to find a way to play this
 ## I use a 2-line shell script that calls this script and then mpg123 on the pi
-## mp3 probably needs an option to set the save location, which could be specified in the 
-## config file.
-
+## mp3 probably needs an option to set the save location
+## with espeak it doesn't make an MP3 it just speaks.
+	print myText	
+if args.nosound:
+	print 'No MP3 Made'
+elif args.espeak:
+	subprocess.Popen(["espeak", "-v", "mb-en1", myText])
+else:
 	tts = gTTS(text= myText, lang='en') 
-	tts.save(save_file)
-
-
-##print time
-	##print '\n'
+	tts.save('text.mp3')
 	
 	
