@@ -109,7 +109,8 @@ class railHandler(object):
 		for item in self.incidentList():
 			if (theLine in item['LinesAffected']) :
 				cleantext = item['Description'].replace('btwn','between')
-				cleantext = cleantext.replace('min','minutes')
+				#Wmata has started spelling out the word minutes on these now. one day i'll check for the word minutes first before cleaning
+				#cleantext = cleantext.replace('min','minutes')
 				cleantext = cleantext.replace('add\'l','additional')
 				theList.append(cleantext)
 		return theList
@@ -233,13 +234,15 @@ if len(theTimes) > 1 and (myRailTimes.averageHeadways(railgroup,line) <= 5):
 ## I use a 2-line shell script that calls this script and then mpg123 on the pi
 ## mp3 probably needs an option to set the save location
 ## with espeak it doesn't make an MP3 it just speaks.
-	print myText	
+print myText	
 if args.nosound:
 	print 'No MP3 Made'
 elif args.espeak:
-	subprocess.Popen(["espeak", "-v", "mb-en1", myText])
+	subprocess.Popen(["espeak", "-v", "mb-us1", myText])
 else:
-	tts = gTTS(text= myText, lang='en') 
-	tts.save('text.mp3')
-	
-	
+	try:
+		tts = gTTS(text= myText, lang='en') 
+		tts.save('text.mp3')
+	except requests.exceptions.HTTPError:
+		print "Google Text to Speech error. Likely due to throttling/CAPTCHa. Switch to espeak with --espeak"
+		
