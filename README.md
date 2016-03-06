@@ -36,4 +36,6 @@ to work though it requires possibly [adding some packages](http://stackoverflow.
 
 In light of this, I may alter the code to check for requests and if it's not there, fall back to pycurl.
 
+## Google Text to Speech blocked
 
+Running this script a few times every morning somehow tripped Google to start throwing up CAPTCHA intercepts, which breaks the code.
