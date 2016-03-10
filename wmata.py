@@ -238,11 +238,11 @@ print myText
 if args.nosound:
 	print 'No MP3 Made'
 elif args.espeak:
-	subprocess.Popen(["espeak", "-v", "en", myText])
+	subprocess.Popen(["espeak", "-v", "en", "-w", "/tmp/wmata.wav", myText])
 else:
 	try:
 		tts = gTTS(text= myText, lang='en') 
-		tts.save('text.mp3')
+		tts.save(save_file)
 	except requests.exceptions.HTTPError:
 		print "Google Text to Speech error. Likely due to throttling/CAPTCHa. Switch to espeak with --espeak"
 		
