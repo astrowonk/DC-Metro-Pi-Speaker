@@ -36,6 +36,16 @@ to work though it requires possibly [adding some packages](http://stackoverflow.
 
 In light of this, I may alter the code to check for requests and if it's not there, fall back to pycurl.
 
-## Google Text to Speech blocked
+## Google Text to Speech issues
 
-Running this script a few times every morning somehow tripped Google to start throwing up CAPTCHA intercepts, which breaks the code. so, now we have espeak support. Much lower quality but it works.
+So, the clever folks behind the gtts package [got around the forbidden url issues](https://github.com/pndurette/gTTS/pull/17). So if you upgrade to the latest version with
+
+	sudo pip install gtts --upgrade
+
+then you should be good to go. But anyway, now we have some limited espeak support. Much lower quality but it works. It generates a .wav in /tmp, you can just play that with mplayer or something. You'll need to install espeak
+
+	sudo apt-get install espeak
+	
+and the sound quality is much worse, but it's something if you encounter gtts trouble.
+
+
