@@ -12,7 +12,7 @@ It also works reasonably well on Mac OS X. I haven't tried it on any other syste
 
 I think the main dependencies are requests, gTTS, argparser and whatever is needed to make those run. espeak if you want get gTTS to work.
 
-HOW TO USE:
+## Usage:
 
 Put the script wherever you like, and make it executable. You may need to fiddle with the first line to specify where your python interpreter is located.
 Edit and copy the example config file to /usr/local/etc/wmata.cfg. You will need an WMATA api key to make it work, and that has to be put into the file.
