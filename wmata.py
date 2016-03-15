@@ -17,14 +17,25 @@ parser = argparse.ArgumentParser()
 parser.add_argument("--nosound", help="Does not create an MP3", action="store_true")
 parser.add_argument("--railtest", help="Loads incident JSON from text file", action="store_true")
 parser.add_argument("--espeak", help="Uses espeak through subprocess", action="store_true")
+parser.add_argument("--config", help="Set config file location", type=str)
 
 
 args = parser.parse_args()
 
+
+
 config = ConfigParser.SafeConfigParser()
 ## I used to just save this to the same directory as wherever the script was but that cause a lot of issues
 ## namely it would fail to load the config when run from a crontab
-config.read('/usr/local/etc/wmata.cfg')
+
+
+if args.config is not None:
+	configlocation = args.config
+else:
+	configlocation = '/usr/local/etc/wmata.cfg'
+	
+
+config.read(configlocation)
 
 busstop = str(config.get('wmata','bus_stop'))
 railstop = str(config.get('wmata','rail_stop'))
