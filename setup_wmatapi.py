@@ -24,7 +24,7 @@ def getjson(url):
 theapi = {'api_key' : api}
 
 #get the line code
-theLine = str(raw_input('Two Digit Line code? RD, BL, YL, OR, GR, or SV'))
+theLine = str(raw_input('Two Digit Line code? RD, BL, YL, OR, GR, or SV: '))
 
 #create URL	
 theStationUrl = "https://api.wmata.com/Rail.svc/json/jStations?LineCode=" + theLine
@@ -49,7 +49,7 @@ for item in theTrains:
 
 theGroup= str(raw_input('Group Number? '))
 print 'You must lookup the bus stop location ID on nextbus or elsewhere on the web'
-theBusStop = str(raw_input('Bus Stop Location ID?'))
+theBusStop = str(raw_input('Bus Stop Location ID? '))
 
 print 'Create config file with the following settings: \n'
 print 'Line = ' + theLine + '\n'
