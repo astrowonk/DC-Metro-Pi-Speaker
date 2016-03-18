@@ -12,6 +12,16 @@ It also works reasonably well on Mac OS X. I haven't tried it on any other syste
 
 I think the main dependencies are requests, gTTS, argparser and whatever is needed to make those run. espeak if you can't get gTTS to work.
 
+## Setup:
+
+The setup script will help you make a config file. Usage:
+
+	./setup_wmatapi.py -api [your api key]
+	
+Prompts will then lead you through picking a rail line, rail stop code, rail "group" (i.e. direction) and write out a config file (including the api key you enter on the command line.)
+
+I can't figure out any easy way to allow users to find their bus stop on the command line. It's much easier to just use [Nextbus](http://www.nextbus.com/) and find it on the web based on your route and direction of choice.
+
 ## Usage:
 
 Put the script wherever you like, and make it executable. You may need to fiddle with the first line to specify where your python interpreter is located.
