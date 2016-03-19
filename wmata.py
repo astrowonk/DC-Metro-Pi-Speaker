@@ -3,13 +3,12 @@
 ########### Python 2.7 #############
 import requests, argparse, subprocess
 
-from datetime import datetime
 import ConfigParser
 
 try:
 	from gtts import gTTS
 except ImportError:
-    print "no GTTs, will use espeak"
+    print "no GTTs, please use --espeak"
 
 
 ## added this argument handler so someone could test this without constantly making new mp3 files
