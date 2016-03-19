@@ -10,8 +10,7 @@ try:
 except ImportError:
     print "no GTTs, please use --espeak"
 
-
-## added this argument handler so someone could test this without constantly making new mp3 files
+## several command line options below, though I doubt anyone but me uses railtest. 
 parser = argparse.ArgumentParser()
 parser.add_argument("--nosound", help="Does not create an MP3", action="store_true")
 parser.add_argument("--railtest", help="Loads incident JSON from text file", action="store_true")
@@ -20,8 +19,6 @@ parser.add_argument("--config", help="Set config file location", type=str)
 
 
 args = parser.parse_args()
-
-
 
 config = ConfigParser.SafeConfigParser()
 ## I used to just save this to the same directory as wherever the script was but that cause a lot of issues
@@ -33,7 +30,6 @@ if args.config is not None:
 else:
 	configlocation = '/usr/local/etc/wmata.cfg'
 	
-
 config.read(configlocation)
 
 busstop = str(config.get('wmata','bus_stop'))
@@ -48,8 +44,6 @@ try:
 	save_file = str(config.get('wmata','save_file')) 
 except ConfigParser.NoOptionError:
 	save_file = '/tmp/text.mp3'
-
-#### getjson is mostly borrowed documentary code that uses pycurl to get the json data. 
 
 ### I used to use pycurl but it took effort to compile on the pi (though worked fine on the Mac) \
 # So I switched to requests. Though I may not be forming the URLs using the parameters syntax
@@ -69,7 +63,6 @@ railPredicUrl = 'https://api.wmata.com/StationPrediction.svc/json/GetPrediction/
 def getjson(url):
 
 	r = requests.get(url, headers=theapi)
-
 
 	return r.json()
 
@@ -196,7 +189,6 @@ if isBus:
 		myText = myText + "Another bus arrives in " + str(myBusTimes.busTimeList()[1]) + " minutes. \n"
 else:
 	myText = ' '
-	
 
 
 # Loops through all the incidents on our line and in the direction we care about and assembles them into one string.
@@ -243,7 +235,7 @@ if len(theTimes) > 1 and (myRailTimes.averageHeadways(railgroup,line) <= 5):
 ## for now you'll have to find a way to play this
 ## I use a 2-line shell script that calls this script and then mpg123 on the pi
 ## mp3 probably needs an option to set the save location
-## with espeak it doesn't make an MP3 it just speaks.
+
 print myText	
 if args.nosound:
 	print 'No MP3 Made'
