@@ -58,4 +58,9 @@ then you should be good to go. But anyway, now we have some limited espeak suppo
 	
 and the sound quality is much worse, but it's something if you encounter gtts trouble.
 
+On OS X, you'd need to use homebrew (or some other package manager, but homebrew seems to be the popular one these days) so 
+	brew install espeak
+	
+I also used homebrew to install the latest python 2.7.11, and for that matter, git.
+
 
