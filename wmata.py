@@ -103,7 +103,11 @@ class busHandler(object):
 #I'm going to define new methods that gets a bus time only for a specific route
 	def busTimeListForRoute(self,theRoute):
 
-		theList = [item['Minutes'] for item in self.PredictionList() if item['RouteID']==theRoute]	
+		theList = [item['Minutes'] for item in self.PredictionList() if item['RouteID'] in theRoute.split(',')]	
+		return theList
+	def busRouteListForRoute(self,theRoute):
+
+		theList = [item['RouteID'] for item in self.PredictionList() if item['RouteID'] in theRoute.split(',')]	
 		return theList		
 		
 class railHandler(object):
@@ -211,13 +215,13 @@ if isBus and not isRouteSpecific:
 		myText = myText + "Another bus arrives in " + str(myBusTimes.busTimeList()[1]) + " minutes. \n"
 elif isBus and isRouteSpecific:
 	if len(myBusTimes.busTimeListForRoute(busroute)) != 0:
-		myText = "The next " + busroute + " bus arrives in " + str(myBusTimes.busTimeListForRoute(busroute)[0]) + " minutes. \n"
+		myText = "The next " + myBusTimes.busRouteListForRoute(busroute)[0] + " bus arrives in " + str(myBusTimes.busTimeListForRoute(busroute)[0]) + " minutes. \n"
 	
 	else:
 		myText = "There are no current bus predictions for route " + busroute + " \n"
 		
 	if len(myBusTimes.busTimeListForRoute(busroute)) > 1:
-		myText = myText + "Another " + busroute + " bus arrives in " + str(myBusTimes.busTimeListForRoute(busroute)[1]) + " minutes. \n"
+		myText = myText + "Another bus, Route " + myBusTimes.busRouteListForRoute(busroute)[1] + ", arrives in " + str(myBusTimes.busTimeListForRoute(busroute)[1]) + " minutes. \n"
 else:	
 	myText = ' '
 
