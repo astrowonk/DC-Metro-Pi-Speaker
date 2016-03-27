@@ -81,14 +81,18 @@ class busHandler(object):
 	def PredictionList(self):
 		return self.thejson['Predictions']
 	def busTimeList(self):
-		theList = []
-		for item in self.PredictionList():
-			theList.append(item['Minutes'])
+		#I realized the more pythonic way to do this is with list comprehensions rather than my old for loops that looked
+		#like this:
+		#for item in self.PredictionList():
+		#	theList.append(item['Minutes'])
+		
+		theList = [item['Minutes'] for item in self.PredictionList()]
 		return theList
+		
+		
 	def routeList(self):
-		theList = []
-		for item in self.PredictionList():
-			theList.append(item['RouteID'])
+	
+		theList = [item['RouteID'] for item in self.PredictionList()]	
 		return theList			
 	def nextBusTime(self):
 		item = self.PredictionList()[0]
@@ -98,10 +102,8 @@ class busHandler(object):
 		return str(item['RouteID'])
 #I'm going to define new methods that gets a bus time only for a specific route
 	def busTimeListForRoute(self,theRoute):
-		theList = []
-		for item in self.PredictionList():
-			if item['RouteID'] == theRoute:
-				theList.append(item['Minutes'])
+
+		theList = [item['Minutes'] for item in self.PredictionList() if item['RouteID']==theRoute]	
 		return theList		
 		
 class railHandler(object):
@@ -114,11 +116,14 @@ class railHandler(object):
 	def incidentList(self):
 		return self.thejson['Incidents']
 	def allIncidents(self):
-		theList = []
-		for item in self.incidentList():
-			theList.append(item['Description'])
+		#theList = []
+		#for item in self.incidentList():
+		#	theList.append(item['Description'])
+		
+		theList = [item['Description'] for item in self.incidentList()]
 		return theList
 	def lineIncidents(self,theLine):
+	#Soooo, I don't know how to do this one with a list comprehension just yet. It's staying a loop.
 		theList = []
 		for item in self.incidentList():
 			if (theLine in item['LinesAffected']) :
@@ -141,19 +146,15 @@ class railPredictionHandler(object):
 	def PredictionList(self):
 		return self.thejson['Trains']
 	def trainTimes(self,group,myline):
-		theList = []
-		for item in self.PredictionList():
-# here I'm just leaving these non numerical values out so I can do math on the list 
-			if (item['Group'] == group) and (item['Min'] not in ['ARR','BRD','---']) and item['Line']==myline:
-				theList.append(item['Min'])
-## make the list ints
+
+		theList = [item['Min'] for item in self.PredictionList() if ((item['Group'] == group) and (item['Min'] not in ['ARR','BRD','---']) and item['Line']==myline)]
 		return map(int, theList)		
 	def trainDestinations(self,group):
-		theList = []
-		for item in self.PredictionList():
-			if item['Group'] == group:
-				theList.append(item['DestinationName'])
+		
+		theList = [item['DestinationName'] for item in self.PredictionList() if item['Group'] == group]
 		return theList
+		
+		
 	def averageHeadways(self,x,myline):
 ## this returns an integer which .. I think I'm ok with
 		return self.trainTimes(x,myline)[-1] / len (theTimes)
@@ -209,7 +210,6 @@ if isBus and not isRouteSpecific:
 	if len(myBusTimes.busTimeList()) > 1:
 		myText = myText + "Another bus arrives in " + str(myBusTimes.busTimeList()[1]) + " minutes. \n"
 elif isBus and isRouteSpecific:
-	
 	if len(myBusTimes.busTimeListForRoute(busroute)) != 0:
 		myText = "The next " + busroute + " bus arrives in " + str(myBusTimes.busTimeListForRoute(busroute)[0]) + " minutes. \n"
 	
