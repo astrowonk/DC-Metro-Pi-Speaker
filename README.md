@@ -65,4 +65,6 @@ On OS X, you'd need to use homebrew (or some other package manager, but homebrew
 	
 I also used homebrew to install the latest python 2.7.11, and for that matter, git.
 
-One day, I will attempt to add the ability to use the built-in MacOS X "say" command via subprocess on OS X to speak the text, rather than gTTS.
+## MacOS X speech
+
+I have added the ability to use the built-in MacOS X "say" command via subprocess on OS X to speak the text, rather than gTTS. Use the --osx flag on the command line. No MP3 or Wave will be generated.
