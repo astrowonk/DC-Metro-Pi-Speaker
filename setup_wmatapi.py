@@ -51,16 +51,21 @@ theGroup= str(raw_input('Group Number? '))
 print 'You must lookup the bus stop location ID on nextbus or elsewhere on the web'
 theBusStop = str(raw_input('Bus Stop Location ID? '))
 
+print 'Specific Bus line? Without this, the script will speak whatever bus is coming next, regardless of line. \n'
+theBusRoute = str(raw_input('Bus Route? (e.g. 42, X2, etc.). Only one though for now: '))
+
 print 'Create config file with the following settings: \n'
 print 'Line = ' + theLine + '\n'
 print 'Station = ' + theStation + '\n'
 print 'Group = ' + theGroup + '\n'
 print 'Bus stop ID = ' + theBusStop + '\n'
+print 'Bus Route = ' + theBusRoute + '\n'
+
 
 theAnswer = str(raw_input("Y/n? "))
 
 if theAnswer == 'y' or theAnswer == 'Y' :
-	theLocation = str(raw_input('Config name and location? Default ./wmata.cfg')) or 'wmata.cfg'
+	theLocation = str(raw_input('Config name and location? Default ./wmata.cfg :')) or 'wmata.cfg'
 
 	config = ConfigParser.SafeConfigParser()
 	config.add_section('wmata')
@@ -70,6 +75,7 @@ if theAnswer == 'y' or theAnswer == 'Y' :
 	config.set('wmata','apikey',api)
 	config.set('wmata','rail_group',theGroup)
 	config.set('wmata','rail_line',theLine)
+	config.set('wmata','bus_route',theBusRoute)
 	print "file written to " + theLocation + '\n'
 	with open(theLocation, 'wb') as configfile:
 		config.write(configfile)

@@ -38,6 +38,11 @@ api = str(config.get('wmata','apikey'))
 railgroup = str(config.get('wmata','rail_group'))
 line = str(config.get('wmata','rail_line'))
 theapi = {'api_key' : api}
+try:
+	busroute = str(config.get('wmata','bus_route'))
+except:
+	busroute = ''
+
 
 ## It will attempt to get a mp3 save location from the config, if not, /tmp.
 try:
@@ -91,7 +96,13 @@ class busHandler(object):
 	def nextRoute(self):
 		item = self.PredictionList()[0]
 		return str(item['RouteID'])
-		
+#I'm going to define new methods that gets a bus time only for a specific route
+	def busTimeListForRoute(self,theRoute):
+		theList = []
+		for item in self.PredictionList():
+			if item['RouteID'] == theRoute:
+				theList.append(item['Minutes'])
+		return theList		
 		
 class railHandler(object):
 ## methods here get allIncidents on every line
@@ -159,12 +170,20 @@ predictionData = getjson(railPredicUrl)
 ##create objects for bus times, rail incidents, and rail times
 ## if busstop is left out of the config file, we won't make a bustimes object
 ## nor even query the bus URL
+isRouteSpecific = False
+
 if len(busstop) > 0:
 	theBusData = getjson(busurl)
 	myBusTimes = busHandler(theBusData)
 	isBus = True
+	if len(busroute) > 0:
+		isRouteSpecific = True
+		
 else:
 	isBus = False
+	
+	
+
 
 if args.railtest:
 	with open('testdata.txt') as data_file:    
@@ -178,7 +197,9 @@ myRailTimes = railPredictionHandler(predictionData)
 	
 ## here is where we assemble the text myText to speak. This should probably be a function? IT's a lot of if statements
 ## recent addition to handle a config file that has no bus stop	
-if isBus:
+
+
+if isBus and not isRouteSpecific:
 	if len(myBusTimes.busTimeList()) != 0:
 		myText = "The next bus arrives in " + str(myBusTimes.busTimeList()[0]) + " minutes. It is route " + str(myBusTimes.routeList()[0]) + '. \n'
 	
@@ -187,7 +208,17 @@ if isBus:
 		
 	if len(myBusTimes.busTimeList()) > 1:
 		myText = myText + "Another bus arrives in " + str(myBusTimes.busTimeList()[1]) + " minutes. \n"
-else:
+elif isBus and isRouteSpecific:
+	
+	if len(myBusTimes.busTimeListForRoute(busroute)) != 0:
+		myText = "The next " + busroute + " bus arrives in " + str(myBusTimes.busTimeListForRoute(busroute)[0]) + " minutes. \n"
+	
+	else:
+		myText = "There are no current bus predictions for route " + busroute + " \n"
+		
+	if len(myBusTimes.busTimeListForRoute(busroute)) > 1:
+		myText = myText + "Another " + busroute + " bus arrives in " + str(myBusTimes.busTimeListForRoute(busroute)[1]) + " minutes. \n"
+else:	
 	myText = ' '
 
 
