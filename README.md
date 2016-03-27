@@ -22,6 +22,8 @@ Prompts will then lead you through picking a rail line, rail stop code, rail "gr
 
 I can't figure out any easy way to allow users to find their bus stop on the command line. It's much easier to just use [Nextbus](http://www.nextbus.com/) and find it on the web based on your route and direction of choice.
 
+For bus stops with more than one route, the optional bus_route config setting allows you to enter comma delimited routes of interest, or just one route.
+
 ## Usage:
 
 Put the script wherever you like, and make it executable. You may need to fiddle with the first line to specify where your python interpreter is located.
@@ -34,7 +36,7 @@ I have set up a crontab that runs a two line shell script to run this python scr
 	/home/pi/bin/wmata.py
 	mpg123 -q /tmp/text.mp3
 
-You can run the python script with --nosound and it will query and print text to the terminal but will not use gTTS to create the mp3 file.
+You can run the python script with --nosound and it will query and print text to the terminal but will not use gTTS or espeak to create an audio file.
 
 ##requests and urllib3 errors
 
@@ -44,7 +46,7 @@ Ok, so requests worked like a charm on OS X with the latest python, but on the R
 
 to work though it requires possibly [adding some packages](http://stackoverflow.com/questions/29099404/ssl-insecureplatform-error-when-using-requests-package) via apt-get to make that work properly. python-dev libffi-dev libssl-dev seem to be needed to compile the security options of requests.
 
-In light of this, I may alter the code to check for requests and if it's not there, fall back to pycurl.
+In light of this, I may alter the code to see if I can find an alternative to requests. But requests is just so nice... pycurl had similar problems with compilation issues.
 
 ## Google Text to Speech issues
 
@@ -63,4 +65,4 @@ On OS X, you'd need to use homebrew (or some other package manager, but homebrew
 	
 I also used homebrew to install the latest python 2.7.11, and for that matter, git.
 
-
+One day, I will attempt to add the ability to use the built-in MacOS X "say" command via subprocess on OS X to speak the text, rather than gTTS.
