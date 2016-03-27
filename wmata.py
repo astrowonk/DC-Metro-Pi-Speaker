@@ -224,7 +224,7 @@ if len(theTimes) == 1:
 	myText = myText + "There is only one upcoming train time, in "  + str(myRailTimes.averageHeadways(railgroup,line)) + " minutes."
 
 if len(theTimes) > 1 and (myRailTimes.averageHeadways(railgroup,line) > 5):
-	myText = myText + "Rail headway are currently averaging " + str(myRailTimes.averageHeadways(railgroup,line)) + " minutes."
+	myText = myText + "Rail headways are currently averaging " + str(myRailTimes.averageHeadways(railgroup,line)) + " minutes."
 
 if len(theTimes) > 1 and (myRailTimes.averageHeadways(railgroup,line) <= 5):
 	myText = myText + "Rail headway times are normal, currently " + str(myRailTimes.averageHeadways(railgroup,line)) + " minutes."
