@@ -16,6 +16,7 @@ parser.add_argument("--nosound", help="Does not create an MP3", action="store_tr
 parser.add_argument("--railtest", help="Loads incident JSON from text file", action="store_true")
 parser.add_argument("--espeak", help="Uses espeak through subprocess", action="store_true")
 parser.add_argument("--config", help="Set config file location", type=str)
+parser.add_argument("--osx", help="Use MacOS X Text to Speech ",  action="store_true")
 
 
 args = parser.parse_args()
@@ -276,6 +277,8 @@ if args.nosound:
 	print 'No MP3 Made'
 elif args.espeak:
 	subprocess.Popen(["espeak", "-v", "en", "-w", "/tmp/wmata.wav", myText])
+elif args.osx:
+	subprocess.Popen(["say", myText])
 else:
 	try:
 		tts = gTTS(text= myText, lang='en') 
