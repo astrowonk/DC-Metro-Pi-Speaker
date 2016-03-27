@@ -246,5 +246,5 @@ else:
 		tts = gTTS(text= myText, lang='en') 
 		tts.save(save_file)
 	except requests.exceptions.HTTPError:
-		print "Google Text to Speech error. Likely due to throttling/CAPTCHa. Switch to espeak with --espeak"
+		print "Google Text to Speech error. Likely due to an out of date gTTS. Switch to espeak with --espeak"
 		
