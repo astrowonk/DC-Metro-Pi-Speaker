@@ -38,6 +38,8 @@ I have set up a crontab that runs a two line shell script to run this python scr
 
 You can run the python script with --nosound and it will query and print text to the terminal but will not use gTTS or espeak to create an audio file.
 
+You can set a save_file option in the config file and specify where the gTTS audio file should be saved. eSpeak for now is always saved to /tmp
+
 ##requests and urllib3 errors
 
 Ok, so requests worked like a charm on OS X with the latest python, but on the RPi it spat out all kinds of SSL errors about an insecure platform. PySSL I think is needed. Eventually I got 
