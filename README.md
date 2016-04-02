@@ -1,16 +1,17 @@
 # DC-Metro-Pi-Speaker
-Uses python to generate location specific audio on bus and rail times using WMATA's api.
+Generates location specific audio on bus and rail times using WMATA's api.
 I wrote this code for my own use as I wanted my raspberry pi to speak topical Metro information in the morning
 at specific times.
 
-This is my first python project, and my first object oriented code. I am sure it could be much more "pythonic" in some 
-places.  There are no doubt numerous issues, including a lack of exception handling.
+This is my first python project, and my first object oriented code. I am sure it could be much more "pythonic" in some places. There is still a widespread lack of exception handling, along with other issues. But it works reliably me for me weekday mornings.
 
-The code queries the WMATA api for one bus stop and one rail stop and group. It then processes that into strings which it sends to the gTTS service and generates and saves to /tmp the mp3. You can then use your mp3 player of choice on the RPi to play the audio.
+The code queries the WMATA api for one bus stop and one rail stop and group. It then processes that into strings which it sends to Google Text to Speech (via gTTS) service and generates and saves to /tmp the mp3. You can then use your mp3 player of choice on the RPi to play the audio.
 
-It also works reasonably well on Mac OS X. I haven't tried it on any other systems.
+It also works reasonably well on Mac OS X, and also supports using the built-in OS X speech synthesizer. I haven't tried it on any other systems.
 
-I think the main dependencies are requests and gTTS. If you want to use espeak, you'll need that as well. You'll need mplayer or something to play the actual mp3 file that gTTS makes. if you can't get gTTS to work.
+I think the main dependencies are requests and gTTS. If you want to use espeak, you'll need that as well. You'll need mplayer or something to play the actual mp3 file that gTTS makes. 
+
+You'll want to have [audio set up properly on the Pi](https://www.raspberrypi.org/documentation/configuration/audio-config.md). I use USB *powered* speakers that are connected to the headphone jack. 
 
 ## Setup:
 
@@ -20,7 +21,7 @@ The setup script will help you make a config file. Usage:
 	
 Prompts will then lead you through picking a rail line, rail stop code, rail "group" (i.e. direction) and write out a config file (including the api key you enter on the command line.)
 
-I can't figure out any easy way to allow users to find their bus stop on the command line. It's much easier to just use [Nextbus](http://www.nextbus.com/) and find it on the web based on your route and direction of choice.
+I can't figure out any easy way to allow users to find their bus stop on the command line. It's much easier to use [BusETA](http://buseta.wmata.com/) and find it on the web based on your route and direction of choice.
 
 For bus stops with more than one route, the optional bus_route config setting allows you to enter comma delimited routes of interest, or just one route.
 
@@ -38,11 +39,11 @@ I have set up a crontab that runs a two line shell script to run this python scr
 
 You can run the python script with --nosound and it will query and print text to the terminal but will not use gTTS or espeak to create an audio file.
 
-You can set a save_file option in the config file and specify where the gTTS audio file should be saved. eSpeak for now is always saved to /tmp
+You can set a save_file option in the config file and specify where the gTTS audio file should be saved. eSpeak for now is always saved to /tmp (I should probably fix that.)
 
 ##requests and urllib3 errors
 
-Ok, so requests worked like a charm on OS X with the latest python, but on the RPi it spat out all kinds of SSL errors about an insecure platform. PySSL I think is needed. Eventually I got 
+Ok, so requests worked like a charm on OS X with the latest python 2.7 from homebrew, but on the RPi it lots of SSL errors about an insecure platform. PySSL I think is needed. Eventually I got 
 
 	sudo pip install requests[security]
 
