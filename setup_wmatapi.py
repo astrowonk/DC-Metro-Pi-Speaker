@@ -52,7 +52,7 @@ print 'You must lookup the bus stop location ID on nextbus or elsewhere on the w
 theBusStop = str(raw_input('Bus Stop Location ID? '))
 
 print 'Specific Bus line? Without this, the script will speak whatever bus is coming next, regardless of line. \n'
-theBusRoute = str(raw_input('Bus Route? (e.g. 42, X2, etc.). Only one though for now: '))
+theBusRoute = str(raw_input('Bus Route? (e.g. 42, X2, etc.). Comma delimitted list is fine: '))
 
 print 'Create config file with the following settings: \n'
 print 'Line = ' + theLine + '\n'
