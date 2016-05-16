@@ -57,11 +57,11 @@ So, the clever folks behind the gtts package [got around the forbidden url issue
 
 	sudo pip install gtts --upgrade
 
-then you should be good to go. But anyway, now we have some limited espeak support. Much lower quality but it works. It generates a .wav in /tmp, you can just play that with mplayer or something. You'll need to install espeak
+then you should be good to go. In general, always keep gtts up to date, check it for updates. But anyway, now I have some limited espeak support. Much lower quality but it works. It generates a .wav in /tmp, you can just play that with mplayer or something. You'll need to install espeak
 
 	sudo apt-get install espeak
 	
-and the sound quality is much worse, but it's something if you encounter gtts trouble.
+and the sound quality is much worse, but it's something if you encounter gtts trouble. But update gtts first.
 
 On OS X, you'd need to use homebrew (or some other package manager, but homebrew seems to be the popular one these days) so 
 	brew install espeak
