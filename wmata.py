@@ -33,12 +33,18 @@ else:
 	
 config.read(configlocation)
 
-busstop = str(config.get('wmata','bus_stop'))
-railstop = str(config.get('wmata','rail_stop'))
-api = str(config.get('wmata','apikey'))
-railgroup = str(config.get('wmata','rail_group'))
-line = str(config.get('wmata','rail_line'))
-theapi = {'api_key' : api}
+try:
+	busstop = str(config.get('wmata','bus_stop'))
+	railstop = str(config.get('wmata','rail_stop'))
+	api = str(config.get('wmata','apikey'))
+	railgroup = str(config.get('wmata','rail_group'))
+	line = str(config.get('wmata','rail_line'))
+	theapi = {'api_key' : api}
+except:
+	print 'Config file error. No file or missing required parameters.'
+	exit()
+
+
 try:
 	busroute = str(config.get('wmata','bus_route'))
 except:
