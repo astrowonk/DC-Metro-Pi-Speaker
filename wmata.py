@@ -17,6 +17,7 @@ parser.add_argument("--railtest", help="Loads incident JSON from text file", act
 parser.add_argument("--espeak", help="Uses espeak through subprocess", action="store_true")
 parser.add_argument("--config", help="Set config file location", type=str)
 parser.add_argument("--osx", help="Use MacOS X Text to Speech ",  action="store_true")
+parser.add_argument("--noalerts", help="Don't speak Rail Alerts.",  action="store_true")
 
 
 args = parser.parse_args()
@@ -210,6 +211,7 @@ myRailTimes = railPredictionHandler(predictionData)
 ## here is where we assemble the text myText to speak. This should probably be a function? IT's a lot of if statements
 ## recent addition to handle a config file that has no bus stop	
 
+print str(myBusTimes.routeList()[1])
 
 if isBus and not isRouteSpecific:
 	if len(myBusTimes.busTimeList()) != 0:
@@ -219,7 +221,7 @@ if isBus and not isRouteSpecific:
 		myText = "There are no current bus predictions. \n"
 		
 	if len(myBusTimes.busTimeList()) > 1:
-		myText = myText + "Another bus arrives in " + str(myBusTimes.busTimeList()[1]) + " minutes. \n"
+		myText = myText + "Another bus, Route " + str(myBusTimes.routeList()[1]) + ", arrives in " + str(myBusTimes.busTimeList()[1]) + " minutes. \n"
 elif isBus and isRouteSpecific:
 	if len(myBusTimes.busTimeListForRoute(busroute)) != 0:
 		myText = "The next " + myBusTimes.busRouteListForRoute(busroute)[0] + " bus arrives in " + str(myBusTimes.busTimeListForRoute(busroute)[0]) + " minutes. \n"
@@ -228,7 +230,7 @@ elif isBus and isRouteSpecific:
 		myText = "There are no current bus predictions for route " + busroute + " \n"
 		
 	if len(myBusTimes.busTimeListForRoute(busroute)) > 1:
-		myText = myText + "Another bus, Route " + myBusTimes.busRouteListForRoute(busroute)[1] + ", arrives in " + str(myBusTimes.busTimeListForRoute(busroute)[1]) + " minutes. \n"
+		myText = myText + "Another bus, Route " + myBusTimes.busRouteListForRoute(busroute)[1] + ", arrives in " + str(myBusTimes.busTimeListForRoute(busroute)[1]) + ", minutes. \n"
 else:	
 	myText = ' '
 
@@ -237,7 +239,7 @@ else:
 # This won't work as well on a station and group that has several lines
 
 railText = ' '
-if len(myIncidents.lineIncidents(line)) > 0:
+if len(myIncidents.lineIncidents(line)) > 0 and not args.noalerts:
 
 	for item in myIncidents.lineIncidents(line):
 		##print item
