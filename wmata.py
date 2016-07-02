@@ -193,8 +193,6 @@ if len(busstop) > 0:
 else:
 	isBus = False
 	
-	
-
 
 if args.railtest:
 	with open('testdata.txt') as data_file:    
@@ -237,7 +235,7 @@ else:
 # This won't work as well on a station and group that has several lines
 
 railText = ' '
-if len(myIncidents.lineIncidents(line)) > 0 and not args.noalerts:
+if (len(myIncidents.lineIncidents(line)) > 0) and (not args.noalerts):
 
 	for item in myIncidents.lineIncidents(line):
 		##print item
