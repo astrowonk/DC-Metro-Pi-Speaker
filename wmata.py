@@ -136,7 +136,7 @@ class railHandler(object):
 	#Soooo, I don't know how to do this one with a list comprehension just yet. It's staying a loop.
 		theList = []
 		for item in self.incidentList():
-			if (theLine in item['LinesAffected']) :
+			if (theLine in item['LinesAffected']) and ("SafeTrack" not in item['Description']) :
 				cleantext = item['Description'].replace('btwn','between')
 				#Wmata has started spelling out the word minutes on these now. one day i'll check for the word minutes first before cleaning
 				#cleantext = cleantext.replace('min','minutes')
