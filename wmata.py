@@ -226,7 +226,7 @@ elif isBus and isRouteSpecific:
 		myText = "There are no current bus predictions for route " + busroute + " \n"
 		
 	if len(myBusTimes.busTimeListForRoute(busroute)) > 1:
-		myText = myText + "Another bus, Route " + myBusTimes.busRouteListForRoute(busroute)[1] + ", arrives in " + str(myBusTimes.busTimeListForRoute(busroute)[1]) + ", minutes. \n"
+		myText = myText + "Another bus, Route " + myBusTimes.busRouteListForRoute(busroute)[1] + ", arrives in " + str(myBusTimes.busTimeListForRoute(busroute)[1]) + " minutes. \n"
 else:	
 	myText = ' '
 
