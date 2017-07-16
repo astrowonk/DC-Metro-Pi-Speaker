@@ -157,7 +157,7 @@ class railPredictionHandler(object):
 		return self.thejson['Trains']
 	def trainTimes(self,group,myline):
 
-		theList = [item['Min'] for item in self.PredictionList() if ((item['Group'] == group) and (item['Min'] not in ['ARR','BRD','---']) and item['Line']==myline)]
+		theList = [item['Min'] for item in self.PredictionList() if ((item['Group'] == group) and (item['Min'] not in ['ARR','BRD','---','']) and item['Line']==myline)]
 		return map(int, theList)		
 	def trainDestinations(self,group):
 		
